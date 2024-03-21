@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "social network app",
   "main": "app.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon src/app.ts",
+    "build": "tsc"
   },
   "author": "Jakub Jurkian",
   "license": "ISC",
@@ -15,6 +17,9 @@
     "ejs": "^3.1.9",
     "express": "^4.19.1",
     "mongodb": "^6.5.0",
-    "mongoose": "^8.2.2"
+    "mongoose": "^8.2.2",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3"
   }
 }
