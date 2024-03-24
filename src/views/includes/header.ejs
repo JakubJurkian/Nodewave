@@ -1,0 +1,28 @@
+<header>
+  <nav class="bg-blue p-4 top-nav">
+    <div>Logo Here</div>
+    <input id="menu-toggle" type="checkbox" />
+    <label class="menu-button-container" for="menu-toggle">
+      <div class="menu-button"></div>
+    </label>
+    <ul class="flex menu">
+      <li>
+        <a>Home</a>
+      </li>
+      <li>
+        <a>My Profile</a>
+      </li>
+      <li>
+        <a href="/login">Login</a>
+      </li>
+      <li>
+        <a href="/signup">Signup</a>
+      </li>
+      <li>
+        <form action="/logout" method="post">
+          <button type="submit">Logout</button>
+        </form>
+      </li>
+    </ul>
+  </nav>
+</header>
