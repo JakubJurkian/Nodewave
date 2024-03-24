@@ -1,0 +1,18 @@
+<%- include('./includes/head.ejs') %>
+<body>
+  <%- include('./includes/header.ejs') %>
+  <div class="flex-column text-white bg-blue w-11/12 sm:w-[584px] mx-auto my-8 p-6 rounded-md box-shadow">
+    <form action="/login" method="POST">
+      <div class="flex flex-col gap-3">
+        <input class="form-input" placeholder="E-mail" type="email" name="email" id="email">
+        <input class="form-input" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" type="password" name="password" id="password">
+        <a href="/reset" class="underline font-bold self-center">Forgot Password?</a>
+        <button class="px-4 py-2 bg-white text-blue rounded-md" type="submit">Login</button>
+        <!-- <p class="self-center">Already have an account? <a class="underline font-bold" href="/signup">Signup</a></p> -->
+        <a class="self-center underline font-bold" href="/signup">Create a new account</a>
+      </div>
+      
+    </form>
+  </div>
+</body>
+</html>

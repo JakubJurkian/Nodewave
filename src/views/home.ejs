@@ -1,13 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
-    <link rel="stylesheet" href="/css/styles.css" />
-  </head>
+<%- include('./includes/head.ejs') %>
   <body>
     <%- include('./includes/header.ejs') %>
-    <h1 class="text-blue">Home Page</h1>
+    <div class="flex-column bg-[#fdfdfd] w-11/12 sm:w-[584px] mx-auto my-8 p-6 rounded-md box-shadow">
+      <div class="flex gap-1">
+        <img src="" alt="avatar.jpg" />
+        <a href="">User</a>
+      </div>
+      <div>
+        <p>Here will be content</p>
+      </div>
+      <p>Published: X time ago</p>
+    </div>
   </body>
 </html>

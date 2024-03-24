@@ -4,7 +4,7 @@ export default {
     extend: {
       colors: {
         'off-white': '#F4F9F4',
-        'blue': '#19A7CE',
+        'blue': '#00baf0',
         'dark-blue': '#146C94',
       }
     }

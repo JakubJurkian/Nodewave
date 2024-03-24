@@ -2,13 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+.box-shadow {
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.form-input {
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 2px;
+  outline: none;
+  color:#00baf0;
+}
+
 .top-nav {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   background-color: #00baf0;
-  box-shadow: rgba(0, 0, 0, 0.10) 1.95px 1.95px 2.6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 1.95px 1.95px 2.6px;
   color: #fff;
   height: 50px;
   padding: 1em;
@@ -77,7 +89,7 @@
   transform: rotate(-405deg);
 }
 
-@media (max-width: 700px) {
+@media (max-width: 640px) {
   .menu-button-container {
     display: flex;
   }
