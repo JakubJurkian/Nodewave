@@ -3,7 +3,6 @@ import { join, dirname } from 'path';
 
 import express from 'express';
 
-
 import homeRoutes from '../src/routes/home.js';
 import profileRoutes from '../src/routes/myProfile.js';
 import authRoutes from '../src/routes/auth.js';
@@ -21,5 +20,9 @@ app.use(express.static(join(__dirname, 'public')));
 app.use(homeRoutes);
 app.use(profileRoutes);
 app.use(authRoutes);
+
+app.use((req, res, next) => {
+  res.render('404');
+});
 
 app.listen(3000);
