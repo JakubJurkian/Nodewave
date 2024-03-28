@@ -1,9 +1,9 @@
 import express from 'express';
 
+import { getMyProfile } from '../controllers/myProfile.js';
+
 const router = express.Router();
 
-router.get('/my-profile', (req, res, next) => {
-  res.render('myProfile', { pageTitle: 'My Profile' });
-});
+router.get('/my-profile', getMyProfile);
 
 export default router;

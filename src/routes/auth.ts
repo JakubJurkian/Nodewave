@@ -1,13 +1,48 @@
 import express from 'express';
+import exValidator from 'express-validator';
+
+import {
+  getLogin,
+  getSignup,
+  postLogin,
+  postSignup,
+} from '../controllers/auth.js';
 
 const router = express.Router();
 
-router.get('/signup', (req, res, next) => {
-  res.render('signup', { pageTitle: 'Signup' });
-});
+router.get('/signup', getSignup);
+router.get('/login', getLogin);
 
-router.get('/login', (req, res, next) => {
-    res.render('login', { pageTitle: 'Login' });
-  });
+router.post('/signup', postSignup, [
+  exValidator
+    .body('email')
+    .isEmail()
+    .withMessage('Please enter a valid email.')
+    .normalizeEmail(),
+  exValidator.body('username').isLength({ min: 3 }),
+  exValidator
+    .body('password', 'Password has to be valid.')
+    .isLength({ min: 4 })
+    .isAlphanumeric()
+    // .custom((value, { req }) => {
+    //   return User.findOne({ email: value }).then((userDoc) => {
+    //     if (userDoc) {
+    //       return Promise.reject('E-mail exists already.');
+    //     }
+    //   });
+    //   //this is async cause we have to reach out to the db (using promises)
+    // })
+    .trim(),
+  exValidator
+    .body('confirmPassword')
+    .trim()
+    .custom((val, { req }) => {
+      if (val !== req.body.password) {
+        throw new Error('Passwords have to match!');
+      }
+      return true;
+    }),
+]);
+router.post('/login', postLogin);
 
 export default router;
