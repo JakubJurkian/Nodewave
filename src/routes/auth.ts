@@ -7,13 +7,14 @@ import {
   postLogin,
   postSignup,
 } from '../controllers/auth.js';
+import User from '../models/User.js';
 
 const router = express.Router();
 
 router.get('/signup', getSignup);
 router.get('/login', getLogin);
 
-router.post('/signup', postSignup, [
+router.post('/signup', [
   exValidator
     .body('email')
     .isEmail()
@@ -24,14 +25,13 @@ router.post('/signup', postSignup, [
     .body('password', 'Password has to be valid.')
     .isLength({ min: 4 })
     .isAlphanumeric()
-    // .custom((value, { req }) => {
-    //   return User.findOne({ email: value }).then((userDoc) => {
-    //     if (userDoc) {
-    //       return Promise.reject('E-mail exists already.');
-    //     }
-    //   });
-    //   //this is async cause we have to reach out to the db (using promises)
-    // })
+    .custom(async (value, { }) => {
+      const userDoc = await User.findOne({ email: value });
+      if (userDoc) {
+        return Promise.reject('E-mail exists already.');
+      }
+      //this is async cause we have to reach out to the db (using promises)
+    })
     .trim(),
   exValidator
     .body('confirmPassword')
@@ -42,7 +42,7 @@ router.post('/signup', postSignup, [
       }
       return true;
     }),
-]);
+], postSignup);
 router.post('/login', postLogin);
 
 export default router;
