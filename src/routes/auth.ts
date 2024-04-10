@@ -5,6 +5,7 @@ import {
   getLogin,
   getSignup,
   postLogin,
+  postLogout,
   postSignup,
 } from '../controllers/auth.js';
 import User from '../models/User.js';
@@ -44,5 +45,7 @@ router.post('/signup', [
     }),
 ], postSignup);
 router.post('/login', postLogin);
+
+router.post('/logout', postLogout);
 
 export default router;

@@ -2,12 +2,12 @@
 <body>
     <%- include('./includes/header.ejs') %>
     <div class="flex-column bg-[#fdfdfd] w-11/12 sm:w-[584px] mx-auto my-8 p-6 rounded-md box-shadow">
-        <div class="flex gap-1">
+        <div class="">
           <img src="" alt="avatar.jpg" />
-          <p>User</p>
+          <p>Username: <span class="underline font-bold"><%= user.username %></span></p>
         </div>
-        <p>Email: </p>
-        <a href="">Change password</a>
+        <p>Email: <span class="underline font-bold"><%= user.email %></span></p>
+        <a href="" class="underline text-blue">Change password</a>
       </div>
 </body>
 </html>

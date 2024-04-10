@@ -5,5 +5,14 @@ export const getMyProfile = (
   res: Response,
   next: NextFunction
 ) => {
-  res.render('myProfile', { pageTitle: 'My Profile' });
+  console.log(req.session.user);
+  const user = {
+    email: req.session.user.email,
+    username: req.session.user.username,
+  };
+  res.render('myProfile', {
+    pageTitle: 'My Profile',
+    isAuthenticated: req.session.isLoggedIn,
+    user
+  });
 };

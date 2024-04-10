@@ -18,5 +18,9 @@ export const getPost = async (
     p.date = `${day}-${month}-${year}`;
     return p;
   });
-  res.render('home', { posts: posts, pageTitle: 'Home' });
+  res.render('home', {
+    posts: posts,
+    pageTitle: 'Home',
+    isAuthenticated: req.session.isLoggedIn,
+  });
 };

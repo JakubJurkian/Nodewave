@@ -12,17 +12,20 @@
       <li>
         <a href="/my-profile">My Profile</a>
       </li>
+      <% if(!isAuthenticated) { %>
       <li>
         <a href="/login">Login</a>
       </li>
       <li>
         <a href="/signup">Signup</a>
       </li>
-      <li>
-        <form action="/logout" method="post">
-          <button type="submit">Logout</button>
-        </form>
-      </li>
+      <% } else { %>
+        <li>
+          <form action="/logout" method="post">
+            <button type="submit">Logout</button>
+          </form>
+        </li>
+      <% } %>
     </ul>
   </nav>
 </header>

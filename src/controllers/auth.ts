@@ -5,11 +5,17 @@ import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 
 export const getSignup = (req: Request, res: Response, next: NextFunction) => {
-  res.render('auth/signup', { pageTitle: 'Signup' });
+  res.render('auth/signup', {
+    pageTitle: 'Signup',
+    isAuthenticated: req.session.isLoggedIn,
+  });
 };
 
 export const getLogin = (req: Request, res: Response, next: NextFunction) => {
-  res.render('auth/login', { pageTitle: 'Login' });
+  res.render('auth/login', {
+    pageTitle: 'Login',
+    isAuthenticated: req.session.isLoggedIn,
+  });
 };
 
 export const postSignup = async (
@@ -50,7 +56,6 @@ export const postLogin = async (
     console.log('incorrect data!');
     return res.status(422).render('auth/login', { pageTitle: 'Login' });
   }
-  console.log('Req body:', req.body);
 
   const email = req.body.email;
   const hashedPassword = req.body.password;
@@ -63,9 +68,17 @@ export const postLogin = async (
 
   const doMatch = await bcrypt.compare(hashedPassword, user.password);
   if (doMatch) {
+    req.session.isLoggedIn = true;
+    req.session.user = user;
     return res.redirect('/');
   } else {
     console.log('incorrect email or password!');
     return res.status(422).render('auth/login', { pageTitle: 'Login' });
   }
+};
+
+export const postLogout = (req: Request, res: Response, next: NextFunction) => {
+  req.session.destroy((err) => {
+    res.redirect('/');
+  });
 };
