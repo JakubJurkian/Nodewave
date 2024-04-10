@@ -4,14 +4,14 @@ import exValidatorRes from 'express-validator';
 import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 
-export const getSignup = (req: Request, res: Response, next: NextFunction) => {
+export const getSignup = (req: Request, res: Response, next: NextFunction): void => {
   res.render('auth/signup', {
     pageTitle: 'Signup',
     isAuthenticated: req.session.isLoggedIn,
   });
 };
 
-export const getLogin = (req: Request, res: Response, next: NextFunction) => {
+export const getLogin = (req: Request, res: Response, next: NextFunction): void => {
   res.render('auth/login', {
     pageTitle: 'Login',
     isAuthenticated: req.session.isLoggedIn,
@@ -22,7 +22,7 @@ export const postSignup = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   const errors = exValidatorRes.validationResult(req);
   if (!errors.isEmpty()) {
     console.log('incorrect data!');
@@ -50,7 +50,7 @@ export const postLogin = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   const errors = exValidatorRes.validationResult(req);
   if (!errors.isEmpty()) {
     console.log('incorrect data!');
@@ -77,7 +77,7 @@ export const postLogin = async (
   }
 };
 
-export const postLogout = (req: Request, res: Response, next: NextFunction) => {
+export const postLogout = (req: Request, res: Response, next: NextFunction): void => {
   req.session.destroy((err) => {
     res.redirect('/');
   });

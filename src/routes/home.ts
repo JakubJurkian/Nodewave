@@ -1,8 +1,8 @@
-import express from 'express';
+import express, { Router } from 'express';
 
 import { getPost } from '../controllers/post.js';
 
-const router = express.Router();
+const router: Router = express.Router();
 
 router.get('/', getPost);
 

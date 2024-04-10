@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Router } from 'express';
 import exValidator from 'express-validator';
 
 import {
@@ -10,7 +10,7 @@ import {
 } from '../controllers/auth.js';
 import User from '../models/User.js';
 
-const router = express.Router();
+const router: Router = express.Router();
 
 router.get('/signup', getSignup);
 router.get('/login', getLogin);
@@ -44,6 +44,7 @@ router.post('/signup', [
       return true;
     }),
 ], postSignup);
+
 router.post('/login', postLogin);
 
 router.post('/logout', postLogout);

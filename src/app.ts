@@ -29,7 +29,7 @@ app.set('view engine', 'ejs');
 app.set('views', join(__dirname, 'views'));
 
 dotenv.config();
-const mongodb_connection = process.env.MONGO_CONNECTION;
+const mongodb_connection: string = process.env.MONGO_CONNECTION!;
 
 app.use(
   session({
@@ -47,7 +47,7 @@ interface AuthenticatedRequest extends Request {
   user?: any;
 }
 
-app.use((req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+app.use((req: AuthenticatedRequest, res: Response, next: NextFunction): void | NextFunction => {
   if (!req.session.user) return next();
 
   User.findById(req.session.user._id)

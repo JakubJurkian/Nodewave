@@ -4,7 +4,7 @@ export const getMyProfile = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): void => {
   console.log(req.session.user);
   const user = {
     email: req.session.user.email,
@@ -13,6 +13,6 @@ export const getMyProfile = (
   res.render('myProfile', {
     pageTitle: 'My Profile',
     isAuthenticated: req.session.isLoggedIn,
-    user
+    user,
   });
 };
