@@ -2,12 +2,20 @@
 <body>
     <%- include('./includes/header.ejs') %>
     <div class="flex-column bg-[#fdfdfd] w-11/12 sm:w-[584px] mx-auto my-8 p-6 rounded-md box-shadow">
-        <div class="">
-          <img src="" alt="avatar.jpg" />
-          <p>Username: <span class="underline font-bold"><%= user.username %></span></p>
+        <div class="flex justify-center">
+          <div class="rounded-full overflow-hidden w-32">
+            <img class="w-full" src="<%= user.avatar %>" alt="avatar.jpg" />
+          </div>
         </div>
+          <form action="/my-profile" method="POST" class="flex place-items-center" enctype="multipart/form-data">
+              <input type="file" name="image" id="image" class="w-3/4 rounded-md border-2 mx-4 file:bg-blue-500 file:mr-3 file:p-1 file:cursor-pointer file:border-none file:hover:bg-blue-400">
+            <button type="submit" class="bg-blue hover:bg-cyan-300 my-4 w-3/4 mobile:w-10/12 p-1 text-lg rounded-md text-white">
+              Change image
+            </button>
+          </form>
+        <p>Username: <span class="underline font-bold"><%= user.username %></span></p>
         <p>Email: <span class="underline font-bold"><%= user.email %></span></p>
         <a href="" class="underline text-blue">Change password</a>
-      </div>
+    </div>
 </body>
 </html>

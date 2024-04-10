@@ -1,6 +1,10 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
+import multer from 'multer';
 
 import { fileURLToPath } from 'url';
 import { join, dirname } from 'path';
@@ -8,10 +12,9 @@ import { join, dirname } from 'path';
 import homeRoutes from '../src/routes/home.js';
 import profileRoutes from '../src/routes/myProfile.js';
 import authRoutes from '../src/routes/auth.js';
-import bodyParser from 'body-parser';
-import session from 'express-session';
-import MongoStore from 'connect-mongo';
 import User from './models/User.js';
+
+
 
 declare module 'express-session' {
   export interface SessionData {
@@ -47,6 +50,7 @@ interface AuthenticatedRequest extends Request {
   user?: any;
 }
 
+
 app.use((req: AuthenticatedRequest, res: Response, next: NextFunction): void | NextFunction => {
   if (!req.session.user) return next();
 
@@ -67,6 +71,12 @@ app.use((req: AuthenticatedRequest, res: Response, next: NextFunction) => {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(join(__dirname, 'public')));
 app.use('/src/images', express.static(join(__dirname, 'images')));
+
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, 'src/images'),
+  filename: (req, file, cb) => cb(null, file.originalname),
+});
+app.use(multer({storage: fileStorage}).single('image'));
 
 app.use(homeRoutes);
 app.use(profileRoutes);

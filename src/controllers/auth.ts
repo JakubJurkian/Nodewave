@@ -28,7 +28,6 @@ export const postSignup = async (
     console.log('incorrect data!');
     return res.status(422).render('auth/signup', { pageTitle: 'Login' });
   }
-  console.log('Req body:', req.body);
 
   const email = req.body.email;
   const doesEmailExist = await User.findOne({ email: email });
@@ -40,8 +39,9 @@ export const postSignup = async (
   const username = req.body.username;
   const password = req.body.password;
   const hashedPassword = await bcrypt.hash(password, 12);
+  const avatar = 'src/images/default-avatar.jpg';
 
-  const user = new User({ email, username, password: hashedPassword });
+  const user = new User({ email, username, password: hashedPassword, avatar });
   user.save();
   res.render('auth/login', { pageTitle: 'Login' });
 };

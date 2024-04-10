@@ -9,7 +9,7 @@ interface User {
 
 const userSchema = new Schema<User>({
   username: { type: String, required: true },
-  avatar: { type: String, required: false },
+  avatar: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
 });
