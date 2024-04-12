@@ -9,8 +9,9 @@ export const getMyProfile = (
   const user = {
     email: req.session.user.email,
     username: req.session.user.username,
-    avatar: req.session.user.avatar
+    avatar: req.session.user.avatar.replace(/\\/g, '/')
   };
+
   res.render('myProfile', {
     pageTitle: 'My Profile',
     isAuthenticated: req.session.isLoggedIn,
@@ -38,5 +39,5 @@ export const postMyProfile = async (
     req.session.user = user;
   }
 
-  return res.status(200).redirect('/');
+  return res.status(200).redirect('/my-profile');
 };
