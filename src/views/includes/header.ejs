@@ -9,9 +9,6 @@
       <li>
         <a href="/">Home</a>
       </li>
-      <li>
-        <a href="/my-profile">My Profile</a>
-      </li>
       <% if(!isAuthenticated) { %>
       <li>
         <a href="/login">Login</a>
@@ -20,11 +17,14 @@
         <a href="/signup">Signup</a>
       </li>
       <% } else { %>
-        <li>
-          <form action="/logout" method="post">
-            <button type="submit">Logout</button>
-          </form>
-        </li>
+      <li>
+        <a href="/my-profile">My Profile</a>
+      </li>
+      <li>
+        <form action="/logout" method="post">
+          <button type="submit">Logout</button>
+        </form>
+      </li>
       <% } %>
     </ul>
   </nav>

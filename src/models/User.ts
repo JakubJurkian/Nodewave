@@ -4,7 +4,9 @@ interface User {
   username: string;
   email: string;
   password: string;
-  avatar: string | undefined;
+  avatar: string;
+  resetToken: string | undefined;
+  resetTokenExpiration: Date | number | undefined;
 }
 
 const userSchema = new Schema<User>({
@@ -12,6 +14,8 @@ const userSchema = new Schema<User>({
   avatar: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
+  resetToken: { type: String, required: false },
+  resetTokenExpiration: { type: Date, required: false },
 });
 
 export default mongoose.model('User', userSchema);
