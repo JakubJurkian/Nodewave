@@ -37,17 +37,24 @@ export const postSignup = async (
   const errors = exValidatorRes.validationResult(req);
   if (!errors.isEmpty()) {
     console.log('incorrect data!');
-    return res.status(422).render('auth/signup', { pageTitle: 'Login' });
+    return res.status(422).render('auth/signup', { pageTitle: 'Signup' });
   }
 
   const email = req.body.email;
   const doesEmailExist = await User.findOne({ email: email });
   if (doesEmailExist) {
     console.log('email already exists!');
-    return res.status(422).render('auth/signup', { pageTitle: 'Login' });
+    return res.status(422).render('auth/signup', { pageTitle: 'Signup' });
   }
 
   const username = req.body.username;
+
+  const doesUsernameExist = await User.findOne({username: username});
+  if(doesUsernameExist) {
+    console.log('username already exists.');
+    return res.status(422).render('auth/signup', { pageTitle: 'Signup' });
+  }
+
   const password = req.body.password;
   const hashedPassword = await bcrypt.hash(password, 12);
   const avatar = 'src/images/default-avatar.jpg';
