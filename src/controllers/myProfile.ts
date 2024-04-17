@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
+
 import User from '../models/User.js';
+import deleteFile from '../util/file.js';
+import { AuthenticatedRequest } from '../app.js';
 
 export const getMyProfile = (
   req: Request,
@@ -20,12 +23,14 @@ export const getMyProfile = (
 };
 
 export const postMyProfile = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   const image = req.file;
   if (!image) return res.redirect('/my-profile');
+
+  deleteFile(req.session.user.avatar);
 
   const imageUrl = image.path;
 
