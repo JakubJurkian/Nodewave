@@ -25,8 +25,6 @@ export const postMyProfile = async (
   next: NextFunction
 ): Promise<void> => {
   const image = req.file;
-  console.log('Img:',image);
-
   if (!image) return res.redirect('/my-profile');
 
   const imageUrl = image.path;

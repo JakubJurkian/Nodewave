@@ -7,14 +7,12 @@ import MongoStore from 'connect-mongo';
 import multer from 'multer';
 
 import { fileURLToPath } from 'url';
-import { join, dirname } from 'path';
+import { join, dirname, extname } from 'path';
 
 import homeRoutes from '../src/routes/home.js';
 import profileRoutes from '../src/routes/myProfile.js';
 import authRoutes from '../src/routes/auth.js';
 import User from './models/User.js';
-
-
 
 declare module 'express-session' {
   export interface SessionData {
@@ -50,18 +48,23 @@ export interface AuthenticatedRequest extends Request {
   user?: any;
 }
 
+app.use(
+  (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+  ): void | NextFunction => {
+    if (!req.session.user) return next();
 
-app.use((req: AuthenticatedRequest, res: Response, next: NextFunction): void | NextFunction => {
-  if (!req.session.user) return next();
-
-  User.findById(req.session.user._id)
-    .then((user) => {
-      if (!user) return next();
-      req.user = user;
-      next();
-    })
-    .catch((err) => next(new Error(err)));
-});
+    User.findById(req.session.user._id)
+      .then((user) => {
+        if (!user) return next();
+        req.user = user;
+        next();
+      })
+      .catch((err) => next(new Error(err)));
+  }
+);
 
 app.use((req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;
@@ -74,9 +77,14 @@ app.use('/src/images', express.static(join(__dirname, 'images')));
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'src/images'),
-  filename: (req, file, cb) => cb(null, file.originalname),
+  filename: (req, file, cb) => {
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    const fileExt = extname(file.originalname);
+    const newFilename = `${file.fieldname}-${uniqueSuffix}${fileExt}`;
+    cb(null, newFilename);
+  },
 });
-app.use(multer({storage: fileStorage}).single('image'));
+app.use(multer({ storage: fileStorage }).single('image'));
 
 app.use(homeRoutes);
 app.use(profileRoutes);
