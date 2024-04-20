@@ -10,6 +10,7 @@ import { join, dirname, extname } from 'path';
 import { fileURLToPath } from 'url';
 import crypto from 'crypto';
 
+import createPostRoutes from '../src/routes/createPost.js';
 import profileRoutes from '../src/routes/myProfile.js';
 import homeRoutes from '../src/routes/home.js';
 import authRoutes from '../src/routes/auth.js';
@@ -97,6 +98,7 @@ app.use(
 app.use(homeRoutes);
 app.use(profileRoutes);
 app.use(authRoutes);
+app.use(createPostRoutes);
 
 app.use((_, res: Response) => {
   res.render('404', { pageTitle: '404' });

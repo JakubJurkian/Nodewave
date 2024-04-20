@@ -2,25 +2,19 @@ import { Request, Response } from 'express';
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
-import exValidatorRes from 'express-validator';
+import { validationResult } from 'express-validator';
 
 import User from '../models/User.js';
 import { AuthenticatedRequest } from '../app.js';
 
-export const getSignup = (
-  req: Request,
-  res: Response
-): void => {
+export const getSignup = (req: Request, res: Response): void => {
   res.render('auth/signup', {
     pageTitle: 'Signup',
     isAuthenticated: req.session.isLoggedIn,
   });
 };
 
-export const getLogin = (
-  req: Request,
-  res: Response
-): void => {
+export const getLogin = (req: Request, res: Response): void => {
   res.render('auth/login', {
     pageTitle: 'Login',
     isAuthenticated: req.session.isLoggedIn,
@@ -31,7 +25,7 @@ export const postSignup = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const errors = exValidatorRes.validationResult(req);
+  const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors.array()[0].msg);
     return res.status(422).render('auth/signup', { pageTitle: 'Signup' });
@@ -46,8 +40,8 @@ export const postSignup = async (
 
   const username = req.body.username;
 
-  const doesUsernameExist = await User.findOne({username});
-  if(doesUsernameExist) {
+  const doesUsernameExist = await User.findOne({ username });
+  if (doesUsernameExist) {
     console.log('username already exists.');
     return res.status(422).render('auth/signup', { pageTitle: 'Signup' });
   }
@@ -60,11 +54,8 @@ export const postSignup = async (
   res.render('auth/login', { pageTitle: 'Login' });
 };
 
-export const postLogin = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const errors = exValidatorRes.validationResult(req);
+export const postLogin = async (req: Request, res: Response): Promise<void> => {
+  const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log('incorrect data!');
     return res.status(422).render('auth/login', { pageTitle: 'Login' });
@@ -90,10 +81,7 @@ export const postLogin = async (
   }
 };
 
-export const postLogout = (
-  req: Request,
-  res: Response
-): void => {
+export const postLogout = (req: Request, res: Response): void => {
   req.session.destroy((err) => {
     res.redirect('/');
   });
@@ -135,7 +123,7 @@ export const postResetPassword = async (
   res: Response
 ): Promise<void> => {
   try {
-    const errors = exValidatorRes.validationResult(req);
+    const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
       console.log('Validation error:', errors.array());
@@ -193,10 +181,7 @@ export const postResetPassword = async (
   }
 };
 
-export const getResetPasswordRequest = (
-  req: Request,
-  res: Response
-): void => {
+export const getResetPasswordRequest = (req: Request, res: Response): void => {
   res.render('auth/resetPasswordRequest', { pageTitle: 'Reset Password' });
 };
 

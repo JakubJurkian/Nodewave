@@ -10,9 +10,6 @@
       <div class="menu-button"></div>
     </label>
     <ul class="flex menu">
-      <li>
-        <a href="/">Home</a>
-      </li>
       <% if(!isAuthenticated) { %>
       <li>
         <a href="/login">Login</a>
@@ -21,6 +18,9 @@
         <a href="/signup">Signup</a>
       </li>
       <% } else { %>
+      <li>
+        <a href="/create-post">Create Post</a>
+      </li>
       <li>
         <a href="/my-profile">My Profile</a>
       </li>

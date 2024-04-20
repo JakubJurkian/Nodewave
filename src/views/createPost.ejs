@@ -1,0 +1,16 @@
+<%- include('./includes/head.ejs') %>
+</head>
+
+<body>
+  <%- include('./includes/header.ejs') %>
+  <div class="flex-column text-white bg-blue w-11/12 sm:w-[584px] mx-auto my-8 p-6 rounded-md box-shadow">
+    <form action="/create-post" method="POST">
+      <div class="flex flex-col gap-3">
+        <textarea placeholder="Say something to the world!" class="form-input text-lg text-left" cols="20" rows="6" name="content" id="content"></textarea>
+        <button class="px-4 py-2 bg-white text-blue rounded-md" type="submit">Create</button>
+      </div>
+    </form>
+  </div>
+</body>
+
+</html>

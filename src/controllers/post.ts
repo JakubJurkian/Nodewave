@@ -1,20 +1,12 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import Post from '../models/Post.js';
+import formatDate from '../util/formatDate.js';
 
-export const getPost = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const getPost = async (req: Request, res: Response): Promise<void> => {
   const posts = await Post.find();
   posts.forEach((p) => {
-    const dateString: string = p.date;
-    const date: Date = new Date(dateString);
-
-    const day: string = String(date.getDate()).padStart(2, '0');
-    const month: string = String(date.getMonth() + 1).padStart(2, '0');
-    const year: string = String(date.getFullYear());
     p.toObject();
-    p.date = `${day}-${month}-${year}`;
+    p.date = formatDate(p.date);
     return p;
   });
   res.render('home', {
