@@ -3,8 +3,7 @@ import Post from '../models/Post.js';
 
 export const getPost = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<void> => {
   const posts = await Post.find();
   posts.forEach((p) => {

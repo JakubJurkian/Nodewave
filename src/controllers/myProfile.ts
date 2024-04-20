@@ -6,8 +6,7 @@ import { AuthenticatedRequest } from '../app.js';
 
 export const getMyProfile = (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): void => {
   const user = {
     email: req.session.user.email,
@@ -24,8 +23,7 @@ export const getMyProfile = (
 
 export const postMyProfile = async (
   req: AuthenticatedRequest,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<void> => {
   const image = req.file;
   if (!image) return res.redirect('/my-profile');
@@ -38,7 +36,7 @@ export const postMyProfile = async (
   if (user) {
     user.avatar = imageUrl;
     await user.save();
-    console.log('done');
+    console.log('image changed.');
     req.session.user = user;
   }
 

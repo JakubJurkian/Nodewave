@@ -1,16 +1,15 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import crypto from 'crypto';
-import exValidatorRes from 'express-validator';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
+import exValidatorRes from 'express-validator';
 
 import User from '../models/User.js';
 import { AuthenticatedRequest } from '../app.js';
 
 export const getSignup = (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): void => {
   res.render('auth/signup', {
     pageTitle: 'Signup',
@@ -20,8 +19,7 @@ export const getSignup = (
 
 export const getLogin = (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): void => {
   res.render('auth/login', {
     pageTitle: 'Login',
@@ -31,17 +29,16 @@ export const getLogin = (
 
 export const postSignup = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<void> => {
   const errors = exValidatorRes.validationResult(req);
   if (!errors.isEmpty()) {
-    console.log('incorrect data!');
+    console.log(errors.array()[0].msg);
     return res.status(422).render('auth/signup', { pageTitle: 'Signup' });
   }
 
   const email = req.body.email;
-  const doesEmailExist = await User.findOne({ email: email });
+  const doesEmailExist = await User.findOne({ email });
   if (doesEmailExist) {
     console.log('email already exists!');
     return res.status(422).render('auth/signup', { pageTitle: 'Signup' });
@@ -49,14 +46,13 @@ export const postSignup = async (
 
   const username = req.body.username;
 
-  const doesUsernameExist = await User.findOne({username: username});
+  const doesUsernameExist = await User.findOne({username});
   if(doesUsernameExist) {
     console.log('username already exists.');
     return res.status(422).render('auth/signup', { pageTitle: 'Signup' });
   }
 
-  const password = req.body.password;
-  const hashedPassword = await bcrypt.hash(password, 12);
+  const hashedPassword = await bcrypt.hash(req.body.password, 12);
   const avatar = 'src/images/default-avatar.jpg';
 
   const user = new User({ email, username, password: hashedPassword, avatar });
@@ -66,8 +62,7 @@ export const postSignup = async (
 
 export const postLogin = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<void> => {
   const errors = exValidatorRes.validationResult(req);
   if (!errors.isEmpty()) {
@@ -97,8 +92,7 @@ export const postLogin = async (
 
 export const postLogout = (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): void => {
   req.session.destroy((err) => {
     res.redirect('/');
@@ -107,8 +101,7 @@ export const postLogout = (
 
 export const getResetPassword = async (
   req: AuthenticatedRequest,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<void> => {
   if (req.user) {
     return res.render('auth/resetPassword', {
@@ -139,8 +132,7 @@ export const getResetPassword = async (
 
 export const postResetPassword = async (
   req: AuthenticatedRequest,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<void> => {
   try {
     const errors = exValidatorRes.validationResult(req);
@@ -203,8 +195,7 @@ export const postResetPassword = async (
 
 export const getResetPasswordRequest = (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): void => {
   res.render('auth/resetPasswordRequest', { pageTitle: 'Reset Password' });
 };
@@ -217,8 +208,7 @@ const transporter = nodemailer.createTransport({
 
 export const postResetPasswordRequest = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<void> => {
   //creating a token for the user
   crypto.randomBytes(32, async (err, buffer) => {

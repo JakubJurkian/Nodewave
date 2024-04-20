@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import exValidator from 'express-validator';
+import { body } from 'express-validator';
 
 import {
   getLogin,
@@ -20,12 +20,17 @@ const router: Router = express.Router();
 
 router.get('/signup', isAuth, getSignup);
 router.get('/login', isAuth, getLogin);
+router.get('/reset-password-request', isAuth, getResetPasswordRequest);
+router.get('/reset-password', isNotAuth, getResetPassword);
+router.get('/reset-password/:token', getResetPassword);
 
+router.post('/login', postLogin);
+router.post('/logout', postLogout);
+router.post('/reset-password-request', postResetPasswordRequest);
 router.post(
   '/signup',
   [
-    exValidator
-      .body('email')
+    body('email')
       .isEmail()
       .withMessage('Please enter a valid email.')
       .normalizeEmail()
@@ -36,14 +41,13 @@ router.post(
         }
         //this is async cause we have to reach out to the db (using promises)
       }),
-    exValidator.body('username').isLength({ min: 3 }),
-    exValidator
-      .body('password', 'Password has to be valid.')
+    body('username').isLength({ min: 3 }),
+
+    body('password', 'Password has to be valid.')
       .isLength({ min: 4 })
       .isAlphanumeric()
       .trim(),
-    exValidator
-      .body('confirmPassword')
+    body('confirmPassword')
       .trim()
       .custom((val, { req }) => {
         if (val !== req.body.password) {
@@ -55,23 +59,14 @@ router.post(
   postSignup
 );
 
-router.post('/login', postLogin);
-router.post('/logout', postLogout);
-router.get('/reset-password-request', isAuth, getResetPasswordRequest);
-router.post('/reset-password-request', postResetPasswordRequest);
-router.get('/reset-password', isNotAuth, getResetPassword);
-router.get('/reset-password/:token', getResetPassword);
-
 router.post(
   '/reset-password',
   [
-    exValidator
-      .body('password', 'Password has to be valid.')
+    body('password', 'Password has to be valid.')
       .isLength({ min: 4 })
       .isAlphanumeric()
       .trim(),
-    exValidator
-      .body('confirmPassword')
+    body('confirmPassword')
       .trim()
       .custom((val, { req }) => {
         if (val !== req.body.password) {
