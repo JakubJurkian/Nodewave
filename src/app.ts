@@ -3,8 +3,8 @@ import MongoStore from 'connect-mongo';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 import multer from 'multer';
+import 'dotenv/config';
 
 import { join, dirname, extname } from 'path';
 import { fileURLToPath } from 'url';
@@ -14,6 +14,7 @@ import createPostRoutes from '../src/routes/createPost.js';
 import profileRoutes from '../src/routes/myProfile.js';
 import homeRoutes from '../src/routes/home.js';
 import authRoutes from '../src/routes/auth.js';
+import postRoutes from '../src/routes/post.js';
 import User from './models/User.js';
 
 declare module 'express-session' {
@@ -35,8 +36,7 @@ const __dirname: string = dirname(__filename);
 app.set('view engine', 'ejs');
 app.set('views', join(__dirname, 'views'));
 
-dotenv.config();
-const mongodbConnection: string = process.env.MONGO_CONNECTION!;
+const mongodbConnection: string | undefined = process.env.MONGO_CONNECTION;
 
 if (!mongodbConnection) {
   console.error('MONGO_CONNECTION environment variable not found.');
@@ -62,6 +62,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(join(__dirname, 'public')));
 app.use('/src/images', express.static(join(__dirname, 'images')));
 
+//images/files upload
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'src/images'),
   filename: (req, file, cb) => {
@@ -75,6 +76,8 @@ app.use(multer({ storage: fileStorage }).single('image'));
 
 app.use((req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;
+  //this allows to use isAuthenticated in ejs 'by default'
+  //I don't have to pass isAuthenticated: req.session.isLoggedIn to render method anymore
   next();
 });
 
@@ -86,8 +89,7 @@ app.use(
   ): Promise<void | NextFunction> => {
     if (!req.session.user) return next();
     try {
-      const user = await User.findById(req.session.user._id);
-      req.user = user;
+      req.user = await User.findById(req.session.user._id);
       next();
     } catch (err) {
       next(err);
@@ -99,6 +101,7 @@ app.use(homeRoutes);
 app.use(profileRoutes);
 app.use(authRoutes);
 app.use(createPostRoutes);
+app.use(postRoutes);
 
 app.use((_, res: Response) => {
   res.render('404', { pageTitle: '404' });
@@ -106,5 +109,5 @@ app.use((_, res: Response) => {
 
 mongoose
   .connect(mongodbConnection)
-  .then(() => app.listen(3000))
+  .then(() => app.listen(process.env.PORT || 3000))
   .catch((err) => console.log(err));

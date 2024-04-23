@@ -1,0 +1,24 @@
+<% if (posts.length > 0) { %>
+<div class="flex flex-col items-center">
+  <% posts.forEach(post => { %>
+  <a href="/post/<%= post._id %>" class="block my-8 w-11/12 sm:w-[584px] mx-auto">
+    <div class="bg-[#fdfdfd] p-6 rounded-md box-shadow hover:bg-[#ffffff] transition-all duration-300">
+      <div class="flex gap-1 items-center">
+        <div class="rounded-lg border-2 overflow-hidden">
+          <img src="<%= post.avatar %>" width="60" alt="avatar" />
+        </div>
+        <div>
+          <p class="text-2xl"><%= post.user %></p>
+        </div>
+      </div>
+      <div class="my-4 p-4 rounded-md bg-slate-100">
+        <p><%= post.content %></p>
+      </div>
+      <p>Published: <%= post.date %></p>
+    </div>
+  </a>
+  <% }) %>
+</div>
+<% } else { %>
+<p>There's no posts yet.</p>
+<% } %>

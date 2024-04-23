@@ -522,6 +522,9 @@ video {
 .mt-5 {
   margin-top: 1.25rem;
 }
+.block {
+  display: block;
+}
 .flex {
   display: flex;
 }
@@ -636,6 +639,10 @@ video {
   font-size: 2.25rem;
   line-height: 2.5rem;
 }
+.text-5xl {
+  font-size: 3rem;
+  line-height: 1;
+}
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
@@ -643,14 +650,6 @@ video {
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
-}
-.text-9xl {
-  font-size: 8rem;
-  line-height: 1;
-}
-.text-5xl {
-  font-size: 3rem;
-  line-height: 1;
 }
 .font-bold {
   font-weight: 700;
@@ -816,6 +815,11 @@ video {
 
 .file\:p-1::file-selector-button {
   padding: 0.25rem;
+}
+
+.hover\:bg-\[\#ffffff\]:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-cyan-300:hover {

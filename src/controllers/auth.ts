@@ -10,14 +10,12 @@ import { AuthenticatedRequest } from '../app.js';
 export const getSignup = (req: Request, res: Response): void => {
   res.render('auth/signup', {
     pageTitle: 'Signup',
-    isAuthenticated: req.session.isLoggedIn,
   });
 };
 
 export const getLogin = (req: Request, res: Response): void => {
   res.render('auth/login', {
     pageTitle: 'Login',
-    isAuthenticated: req.session.isLoggedIn,
   });
 };
 

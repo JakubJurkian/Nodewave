@@ -1,26 +1,9 @@
 <%- include('./includes/head.ejs') %>
-  </head>
-  <body>
-    <%- include('./includes/header.ejs') %>
-    <% if (posts.length > 0) { %>
-    <% for(let post of posts) { %>
-      <div class="flex-column bg-[#fdfdfd] w-11/12 sm:w-[584px] mx-auto my-8 p-6 rounded-md box-shadow">
-        <div class="flex gap-1 items-center">
-          <div class="rounded-lg border-2 overflow-hidden">
-            <img src="<%= post.avatar %>" width="60" alt="avatar" />
-          </div>
-          <div class="">
-            <a href="" class="text-2xl"><%= post.user %></a>
-          </div>
-        </div>
-        <div class="my-4 p-4 rounded-md bg-slate-100">
-          <p><%= post.content %></p>
-        </div>
-        <p>Published: <%= post.date %></p>
-      </div>
-    <% } %> 
-    <% } else { %>
-      <p>There's no posts yet.</p>
-    <% } %>  
-  </body>
+</head>
+
+<body>
+  <%- include('./includes/header.ejs') %>
+  <%- include('./includes/posts.ejs') %>
+</body>
+
 </html>

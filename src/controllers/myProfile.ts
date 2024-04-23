@@ -1,23 +1,22 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 
 import User from '../models/User.js';
-import deleteFile from '../util/file.js';
-import { AuthenticatedRequest } from '../app.js';
 import Post from '../models/Post.js';
+import deleteFile from '../util/file.js';
 import formatDate from '../util/formatDate.js';
+import { AuthenticatedRequest } from '../app.js';
 
 export const getMyProfile = async (
   req: AuthenticatedRequest,
   res: Response
 ): Promise<void> => {
   const user = {
-    email: req.session.user.email,
-    username: req.session.user.username,
-    avatar: req.session.user.avatar.replace(/\\/g, '/'),
+    email: req.user.email,
+    username: req.user.username,
+    avatar: req.user.avatar.replace(/\\/g, '/'),
   };
 
   const myPosts = await Post.find({ user: req.user.username });
-  console.log(myPosts);
   myPosts.forEach((p) => {
     p.toObject();
     p.date = formatDate(p.date);
@@ -26,7 +25,6 @@ export const getMyProfile = async (
 
   res.render('myProfile', {
     pageTitle: 'My Profile',
-    isAuthenticated: req.session.isLoggedIn,
     user,
     posts: myPosts,
   });
@@ -39,16 +37,23 @@ export const postMyProfile = async (
   const image = req.file;
   if (!image) return res.redirect('/my-profile');
 
-  deleteFile(req.session.user.avatar);
-
+  deleteFile(req.user.avatar);
   const imageUrl = image.path;
 
-  const user = await User.findById(req.session.user._id);
+  const user = await User.findById(req.user._id);
   if (user) {
     user.avatar = imageUrl;
     await user.save();
     console.log('image changed.');
-    req.session.user = user;
+    req.user = user;
+
+    const posts = await Post.find({ user: user.username });
+    if (posts) {
+      posts.forEach(async (p) => {
+        p.avatar = user.avatar;
+        await p.save();
+      });
+    }
   }
 
   return res.status(200).redirect('/my-profile');
