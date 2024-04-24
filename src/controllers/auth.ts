@@ -7,15 +7,20 @@ import { validationResult } from 'express-validator';
 import User from '../models/User.js';
 import { AuthenticatedRequest } from '../app.js';
 
-export const getSignup = (req: Request, res: Response): void => {
+export const getSignup = (_: Request, res: Response): void => {
   res.render('auth/signup', {
     pageTitle: 'Signup',
+    error: null,
+    username: null,
+    email: null,
   });
 };
 
-export const getLogin = (req: Request, res: Response): void => {
+export const getLogin = (_: Request, res: Response): void => {
   res.render('auth/login', {
     pageTitle: 'Login',
+    error: null,
+    email: null,
   });
 };
 
@@ -24,16 +29,29 @@ export const postSignup = async (
   res: Response
 ): Promise<void> => {
   const errors = validationResult(req);
+  let error = null;
   if (!errors.isEmpty()) {
-    console.log(errors.array()[0].msg);
-    return res.status(422).render('auth/signup', { pageTitle: 'Signup' });
+    error = { msg: errors.array()[0].msg };
+  }
+  if (!errors.isEmpty()) {
+    return res.status(422).render('auth/signup', {
+      pageTitle: 'Signup',
+      error,
+      username: req.body.username,
+      email: req.body.email,
+    });
   }
 
   const email = req.body.email;
   const doesEmailExist = await User.findOne({ email });
   if (doesEmailExist) {
     console.log('email already exists!');
-    return res.status(422).render('auth/signup', { pageTitle: 'Signup' });
+    return res.status(422).render('auth/signup', {
+      pageTitle: 'Signup',
+      error,
+      username: req.body.username,
+      email,
+    });
   }
 
   const username = req.body.username;
@@ -41,7 +59,12 @@ export const postSignup = async (
   const doesUsernameExist = await User.findOne({ username });
   if (doesUsernameExist) {
     console.log('username already exists.');
-    return res.status(422).render('auth/signup', { pageTitle: 'Signup' });
+    return res.status(422).render('auth/signup', {
+      pageTitle: 'Signup',
+      error,
+      username,
+      email,
+    });
   }
 
   const hashedPassword = await bcrypt.hash(req.body.password, 12);
@@ -54,18 +77,29 @@ export const postSignup = async (
 
 export const postLogin = async (req: Request, res: Response): Promise<void> => {
   const errors = validationResult(req);
+  console.log(errors.array());
   if (!errors.isEmpty()) {
+    const error = { msg: errors.array()[0].msg };
     console.log('incorrect data!');
-    return res.status(422).render('auth/login', { pageTitle: 'Login' });
+    return res.status(422).render('auth/login', {
+      pageTitle: 'Login',
+      error,
+      email: req.body.email,
+    });
   }
 
   const email = req.body.email;
   const hashedPassword = req.body.password;
 
+  const error = { msg: 'Incorrect email or password!' };
   const user = await User.findOne({ email });
   if (!user) {
-    console.log('incorrect email or password!');
-    return res.status(422).render('auth/login', { pageTitle: 'Login' });
+    console.log('incorrect email!');
+    return res.status(422).render('auth/login', {
+      pageTitle: 'Login',
+      error,
+      email: req.body.email,
+    });
   }
 
   const doMatch = await bcrypt.compare(hashedPassword, user.password);
@@ -74,8 +108,12 @@ export const postLogin = async (req: Request, res: Response): Promise<void> => {
     req.session.user = user;
     return res.redirect('/');
   } else {
-    console.log('incorrect email or password!');
-    return res.status(422).render('auth/login', { pageTitle: 'Login' });
+    console.log('incorrect password!');
+    return res.status(422).render('auth/login', {
+      pageTitle: 'Login',
+      error,
+      email: req.body.email,
+    });
   }
 };
 
@@ -179,7 +217,7 @@ export const postResetPassword = async (
   }
 };
 
-export const getResetPasswordRequest = (req: Request, res: Response): void => {
+export const getResetPasswordRequest = (_: Request, res: Response): void => {
   res.render('auth/resetPasswordRequest', { pageTitle: 'Reset Password' });
 };
 

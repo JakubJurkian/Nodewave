@@ -24,9 +24,9 @@ router.get('/reset-password-request', isAuth, getResetPasswordRequest);
 router.get('/reset-password', isNotAuth, getResetPassword);
 router.get('/reset-password/:token', getResetPassword);
 
-router.post('/login', postLogin);
 router.post('/logout', postLogout);
 router.post('/reset-password-request', postResetPasswordRequest);
+router.post('/login', body('email').isEmail().normalizeEmail(), postLogin);
 router.post(
   '/signup',
   [
@@ -37,11 +37,14 @@ router.post(
       .custom(async (value, {}) => {
         const userDoc = await User.findOne({ email: value });
         if (userDoc) {
-          return Promise.reject('E-mail exists already.');
+          return Promise.reject('This E-mail exists already.');
         }
         //this is async cause we have to reach out to the db (using promises)
       }),
-    body('username').isLength({ min: 3 }),
+    body(
+      'username',
+      'Please enter a valid username (minimum 3 characters).'
+    ).isLength({ min: 3 }),
 
     body('password', 'Password has to be valid.')
       .isLength({ min: 4 })
