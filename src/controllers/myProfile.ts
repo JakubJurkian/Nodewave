@@ -10,18 +10,18 @@ export const getMyProfile = async (
   req: AuthenticatedRequest,
   res: Response
 ): Promise<void> => {
-  const user = {
-    email: req.user.email,
-    username: req.user.username,
-    avatar: req.user.avatar.replace(/\\/g, '/'),
-  };
-
   const myPosts = await Post.find({ user: req.user.username });
   myPosts.forEach((p) => {
     p.toObject();
     p.date = formatDate(p.date);
     return p;
   });
+
+  const user = {
+    email: req.user.email,
+    username: req.user.username,
+    avatar: req.user.avatar.replace(/\\/g, '/'),
+  };
 
   res.render('myProfile', {
     pageTitle: 'My Profile',
@@ -54,6 +54,8 @@ export const postMyProfile = async (
         await p.save();
       });
     }
+  } else {
+    res.status(500).render('500');
   }
 
   return res.status(200).redirect('/my-profile');

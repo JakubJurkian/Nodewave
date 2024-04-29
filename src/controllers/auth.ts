@@ -72,7 +72,7 @@ export const postSignup = async (
 
   const user = new User({ email, username, password: hashedPassword, avatar });
   user.save();
-  res.render('auth/login', { pageTitle: 'Login' });
+  res.render('auth/login', { pageTitle: 'Login', error: null });
 };
 
 export const postLogin = async (req: Request, res: Response): Promise<void> => {
@@ -119,6 +119,7 @@ export const postLogin = async (req: Request, res: Response): Promise<void> => {
 
 export const postLogout = (req: Request, res: Response): void => {
   req.session.destroy((err) => {
+    console.log(err);
     res.redirect('/');
   });
 };
@@ -239,23 +240,22 @@ export const postResetPasswordRequest = async (
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
       console.log('this email does not exist');
-      return res.redirect('/reset-password-request');
-    }
-    user.resetToken = token;
-    user.resetTokenExpiration = Date.now() + 3600000;
-    await user.save();
-
-    res.redirect('/reset-password-request');
-    console.log('check your email');
-    transporter
-      .sendMail({
-        to: req.body.email,
-        from: 'kuba.jur03@gmail.com',
-        subject: 'Password reset',
-        html: `<p>You requested a password reset</p>
+    } else {
+      user.resetToken = token;
+      user.resetTokenExpiration = Date.now() + 3600000;
+      await user.save();
+      console.log('check your email');
+      transporter
+        .sendMail({
+          to: req.body.email,
+          from: 'kuba.jur03@gmail.com',
+          subject: 'Password reset',
+          html: `<p>You requested a password reset</p>
       <p>Click this <a href="http://localhost:3000/reset-password/${token}">link</a> to set a new password.</p>
     `,
-      })
-      .catch((err: any) => console.log(err));
+        })
+        .catch((err: any) => console.log(err));
+    }
+    res.redirect('/');
   });
 };

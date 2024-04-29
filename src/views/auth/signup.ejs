@@ -6,16 +6,16 @@
   <div class="flex-column text-white bg-blue w-11/12 sm:w-[584px] mx-auto my-8 p-6 rounded-md box-shadow">
     <form action="/signup" method="POST">
       <div class="flex flex-col gap-3">
-        <input class="form-input" placeholder="Username" type="text" name="username" id="username" value="<% if (error) { %><%= username %><% } %>" />
-        <input class="form-input" placeholder="E-mail" type="email" name="email" id="email" value="<% if (error) { %><%= email %><% } %>" />
-        <input class="form-input" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" type="password" name="password" id="password" />
-        <input class="form-input" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" type="password" name="confirmPassword" id="confirmPassword" />
+        <input class="form-input" placeholder="Username" type="text" name="username" id="username" value="<% if (error) { %><%= username %><% } %>" required />
+        <input class="form-input" placeholder="E-mail" type="email" name="email" id="email" value="<% if (error) { %><%= email %><% } %>" required />
+        <input class="form-input" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" type="password" name="password" id="password" required />
+        <input class="form-input" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" type="password" name="confirmPassword" id="confirmPassword" required />
         <% if(error) { %>
         <div class="text-center border-2 bg-red-500 p-4 rounded-sm w-2/3 m-auto">
           <p><%= error.msg %></p>
         </div>
         <% } %>
-        <button class="px-4 py-2 bg-white text-blue rounded-md" type="submit">
+        <button class="px-4 py-2 bg-white text-blue rounded-md transition-all duration-300 hover:bg-cyan-300 hover:text-white" type="submit">
           Signup
         </button>
         <p class="self-center">Already have an account? <a class="underline font-bold" href="/login">Login</a></p>

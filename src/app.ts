@@ -10,11 +10,9 @@ import { join, dirname, extname } from 'path';
 import { fileURLToPath } from 'url';
 import crypto from 'crypto';
 
-import createPostRoutes from '../src/routes/createPost.js';
-import profileRoutes from '../src/routes/myProfile.js';
-import homeRoutes from '../src/routes/home.js';
+import indexRoutes from '../src/routes/index.js';
 import authRoutes from '../src/routes/auth.js';
-import postRoutes from '../src/routes/post.js';
+import postRoutes from './routes/posts.js';
 import User from './models/User.js';
 
 declare module 'express-session' {
@@ -29,7 +27,6 @@ export interface AuthenticatedRequest extends Request {
 }
 
 const app: Express = express();
-
 const __filename: string = fileURLToPath(import.meta.url);
 const __dirname: string = dirname(__filename);
 
@@ -64,8 +61,8 @@ app.use('/src/images', express.static(join(__dirname, 'images')));
 
 //images/files upload
 const fileStorage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'src/images'),
-  filename: (req, file, cb) => {
+  destination: (_, __, cb) => cb(null, 'src/images'),
+  filename: (_, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
     const fileExt = extname(file.originalname);
     const newFilename = `${file.fieldname}-${uniqueSuffix}${fileExt}`;
@@ -84,7 +81,7 @@ app.use((req: AuthenticatedRequest, res: Response, next: NextFunction) => {
 app.use(
   async (
     req: AuthenticatedRequest,
-    _,
+    res: Response,
     next: NextFunction
   ): Promise<void | NextFunction> => {
     if (!req.session.user) return next();
@@ -92,15 +89,13 @@ app.use(
       req.user = await User.findById(req.session.user._id);
       next();
     } catch (err) {
-      next(err);
+      res.status(500).render('500');
     }
   }
 );
 
-app.use(homeRoutes);
-app.use(profileRoutes);
+app.use(indexRoutes);
 app.use(authRoutes);
-app.use(createPostRoutes);
 app.use(postRoutes);
 
 app.use((_, res: Response) => {

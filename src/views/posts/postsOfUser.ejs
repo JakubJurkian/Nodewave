@@ -1,0 +1,14 @@
+<%- include('./includes/head.ejs') %>
+</head>
+
+<body>
+  <%- include('../includes/header.ejs') %>
+  <main>
+    <div class="mt-5">
+      <h1 class=" text-5xl text-center"><%= isCreator ? 'Your Posts' : `Posts Of ${user.username}` %></h1>
+    </div>
+    <%- include('../includes/posts.ejs') %>
+  </main>
+</body>
+
+</html>
