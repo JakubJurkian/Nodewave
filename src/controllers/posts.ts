@@ -7,18 +7,17 @@ import { AuthenticatedRequest } from '../app.js';
 import User from '../models/User.js';
 
 export const getPost = async (req: Request, res: Response): Promise<void> => {
-  let post = await Post.findById(req.params.postId);
+  const post = await Post.findById(req.params.postId);
   if (post) {
     post.toObject();
     post.date = formatDate(post.date);
+    res.render('posts/post-details', {
+      post,
+      pageTitle: 'Post',
+    });
   } else {
     return res.redirect('/');
   }
-
-  res.render('posts/post-details', {
-    post,
-    pageTitle: 'Post',
-  });
 };
 
 export const getPosts = async (_: Request, res: Response): Promise<void> => {
@@ -39,7 +38,6 @@ export const getUserPosts = async (
   res: Response
 ): Promise<void> => {
   const username = req.params.username;
-  console.log(username);
 
   const user = await User.findOne({ username });
   if (user) {
@@ -63,7 +61,7 @@ export const getUserPosts = async (
       isCreator: userData.username === req.user.username,
     });
   } else {
-    res.status(500).render('500');
+    res.status(404).render('404');
   }
 };
 

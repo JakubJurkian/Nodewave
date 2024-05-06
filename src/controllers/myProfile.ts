@@ -54,9 +54,8 @@ export const postMyProfile = async (
         await p.save();
       });
     }
+    return res.status(200).redirect('/my-profile');
   } else {
-    res.status(500).render('500');
+    return res.status(404).render('404');
   }
-
-  return res.status(200).redirect('/my-profile');
 };
