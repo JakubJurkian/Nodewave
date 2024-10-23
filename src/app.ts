@@ -31,7 +31,7 @@ const __filename: string = fileURLToPath(import.meta.url);
 const __dirname: string = dirname(__filename);
 
 app.set('view engine', 'ejs');
-app.set('views', join(__dirname, 'views'));
+app.set('views', 'dist/views');
 
 const mongodbConnection: string | undefined = process.env.MONGO_CONNECTION;
 
