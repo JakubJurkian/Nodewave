@@ -10,7 +10,7 @@
     "start": "node ./dist/app.js",
     "dev": "concurrently \"npm run nodemon\" \"npm run tailwind\"",
     "tailwind": "postcss ./src/public/css/tailwind.css -o ./src/public/css/styles.css --watch",
-    "copy-assets": "copyfiles -u 1 ./src/views/**/* ./dist"
+    "copy-assets": "copyfiles -u 1 ./src/public/**/* ./dist"
   },
   "author": "Jakub Jurkian",
   "license": "ISC",
