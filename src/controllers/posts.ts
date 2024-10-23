@@ -21,14 +21,14 @@ export const getPost = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const getPosts = async (_: Request, res: Response): Promise<void> => {
-  const posts = await Post.find();
-  posts.forEach((p) => {
-    p.toObject();
-    p.date = formatDate(p.date);
-    return p;
+  const posts = await Post.find().sort({ date: -1 });
+  const formattedPosts = posts.map((p) => {
+    const postObject = p.toObject();
+    postObject.date = formatDate(postObject.date);
+    return postObject;
   });
   res.render('home', {
-    posts: posts,
+    posts: formattedPosts,
     pageTitle: 'Home',
   });
 };
@@ -58,7 +58,7 @@ export const getUserPosts = async (
       pageTitle: `Posts of ${username}`,
       posts: userPosts,
       user: userData,
-      isCreator: userData.username === req.user.username,
+      isCreator: req.user ? userData.username === req.user.username : false,
     });
   } else {
     res.status(404).render('404');

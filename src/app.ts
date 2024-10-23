@@ -10,8 +10,8 @@ import { join, dirname, extname } from 'path';
 import { fileURLToPath } from 'url';
 import crypto from 'crypto';
 
-import indexRoutes from '../src/routes/index.js';
-import authRoutes from '../src/routes/auth.js';
+import authRoutes from './routes/auth.js';
+import indexRoutes from './routes/index.js';
 import postRoutes from './routes/posts.js';
 import User from './models/User.js';
 
