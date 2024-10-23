@@ -7,7 +7,7 @@
   "scripts": {
     "nodemon": "nodemon --config nodemon.json src/app.ts",
     "build": "tsc && postcss src/public/css/tailwind.css -o src/public/css/styles.css && npm run copy-assets",
-    "start": "node dist/app.js",
+    "start": "node ./dist/app.js",
     "dev": "concurrently \"npm run nodemon\" \"npm run tailwind\"",
     "tailwind": "postcss src/public/css/tailwind.css -o src/public/css/styles.css --watch",
     "copy-assets": "copyfiles -u 1 src/views/**/* dist"
