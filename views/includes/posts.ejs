@@ -4,8 +4,8 @@
   <a href="/post/<%= post._id %>" class="block my-8 w-11/12 sm:w-[584px] mx-auto">
     <div class="bg-[#fdfdfd] p-6 rounded-md box-shadow hover:bg-[#ffffff] transition-all duration-300">
       <div class="flex gap-1 items-center">
-        <div class="rounded-lg border-2 overflow-hidden">
-          <img src="/<%= post.avatar %>" width="60" alt="avatar" />
+        <div class="rounded-lg border-2 overflow-hidden w-14 h-14">
+          <img src="<%= post.avatar %>" class="bg-contain w-full h-full" alt="avatar" />
         </div>
         <div>
           <!-- <a href="/user/<%= post.user %>" class=""> -->

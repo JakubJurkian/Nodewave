@@ -1,5 +1,5 @@
 export default {
-  content: ['./src/views/**/*.ejs'],
+  content: ['./views/**/*.ejs'],
   theme: {
     extend: {
       colors: {

@@ -56,12 +56,11 @@ app.use(
 );
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(join(__dirname, 'public')));
-app.use('/src/images', express.static(join(__dirname, 'images')));
+app.use(express.static(join(__dirname.replace('dist', 'src'), 'public')));
 
 //images/files upload
 const fileStorage = multer.diskStorage({
-  destination: (_, __, cb) => cb(null, 'src/images'),
+  destination: (_, __, cb) => cb(null, join(__dirname, '../src/public/images')),
   filename: (_, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
     const fileExt = extname(file.originalname);
@@ -87,6 +86,8 @@ app.use(
     if (!req.session.user) return next();
     try {
       req.user = await User.findById(req.session.user._id);
+      req.user.avatar = req.user.avatar.replace(/\\/g, '/');
+      console.log(req.user);
       next();
     } catch (err) {
       res.status(500).render('500');
