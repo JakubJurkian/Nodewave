@@ -21,7 +21,8 @@ export const getPost = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const getPosts = async (_: Request, res: Response): Promise<void> => {
-  const posts = await Post.find().sort({ date: -1 });
+  const posts = await Post.find().sort({date: 'asc'});
+
   const formattedPosts = posts.map((p) => {
     const postObject = p.toObject();
     postObject.date = formatDate(postObject.date);

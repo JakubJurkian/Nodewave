@@ -8,7 +8,7 @@
     "nodemon": "nodemon --config nodemon.json src/app.ts",
     "tailwind": "postcss ./src/public/css/tailwind.css -o ./src/public/css/styles.css",
     "dev": "concurrently \"npm run nodemon\" \"npm run tailwind -- --watch\"",
-    "build": "tsc && npm run tailwind && copyfiles -u 1 src/public/**/* dist",
+    "build": "tsc && npm run tailwind",
     "start": "npm run build && node ./dist/app.js"
   },
   "author": "Jakub Jurkian",

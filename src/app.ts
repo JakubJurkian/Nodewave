@@ -87,7 +87,6 @@ app.use(
     try {
       req.user = await User.findById(req.session.user._id);
       req.user.avatar = req.user.avatar.replace(/\\/g, '/');
-      console.log(req.user);
       next();
     } catch (err) {
       res.status(500).render('500');

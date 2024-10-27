@@ -20,8 +20,6 @@ export const getMyProfile = async (
 
   const avatar = req.user.avatar.substring(req.user.avatar.indexOf('images'));
 
-  console.log(avatar);
-
   const user = {
     email: req.user.email,
     username: req.user.username,
@@ -45,7 +43,6 @@ export const postMyProfile = async (
 
   const avatar = 'src/public/' + req.user.avatar;
   deleteFile(avatar);
-  const absoluteImageUrlPath = image.path;
 
   const relativeImgUrlPath = path.join('images', image.filename);
 
