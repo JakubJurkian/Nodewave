@@ -16,7 +16,7 @@
     <div class=" my-4 p-4 rounded-md bg-slate-100">
       <p><%= post.content %></p>
     </div>
-    <p>Published: <%= post.date %></p>
+    <p>Published: <%= post.formattedDate %></p>
     <% } else { %>
     <p class="text-center">Such a post does not exsit.</p>
     <% } %>

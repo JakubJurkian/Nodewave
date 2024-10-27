@@ -10,7 +10,7 @@ export const getPost = async (req: Request, res: Response): Promise<void> => {
   const post = await Post.findById(req.params.postId);
   if (post) {
     post.toObject();
-    post.date = formatDate(post.date);
+    (post as any).formattedDate = formatDate(post.date);
     res.render('posts/post-details', {
       post,
       pageTitle: 'Post',
@@ -21,13 +21,14 @@ export const getPost = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const getPosts = async (_: Request, res: Response): Promise<void> => {
-  const posts = await Post.find().sort({date: 'asc'});
+  const posts = await Post.find().sort({ date: 'desc' });
 
   const formattedPosts = posts.map((p) => {
     const postObject = p.toObject();
-    postObject.date = formatDate(postObject.date);
+    (postObject as any).formattedDate = formatDate(postObject.date);
     return postObject;
   });
+  
   res.render('home', {
     posts: formattedPosts,
     pageTitle: 'Home',
@@ -51,7 +52,7 @@ export const getUserPosts = async (
 
     userPosts.forEach((p) => {
       p.toObject();
-      p.date = formatDate(p.date);
+      (p as any).formattedDate = formatDate(p.date);
       return p;
     });
 

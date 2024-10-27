@@ -14,7 +14,7 @@ export const getMyProfile = async (
   const myPosts = await Post.find({ user: req.user.username });
   myPosts.forEach((p) => {
     p.toObject();
-    p.date = formatDate(p.date);
+    (p as any).formattedDate = formatDate(p.date);
     return p;
   });
 
