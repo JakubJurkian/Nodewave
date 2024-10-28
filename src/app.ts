@@ -3,7 +3,7 @@ import MongoStore from 'connect-mongo';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-import multer from 'multer';
+import multer, { FileFilterCallback } from 'multer';
 import 'dotenv/config';
 
 import { join, dirname, extname } from 'path';
@@ -52,6 +52,9 @@ app.use(
     }),
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      maxAge: 24*60*60*1000,
+    },
   })
 );
 
@@ -61,14 +64,26 @@ app.use(express.static(join(__dirname.replace('dist', 'src'), 'public')));
 //images/files upload
 const fileStorage = multer.diskStorage({
   destination: (_, __, cb) => cb(null, join(__dirname, '../src/public/images')),
-  filename: (_, file, cb) => {
+  filename: (_: Express.Request, file: Express.Multer.File, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
     const fileExt = extname(file.originalname);
     const newFilename = `${file.fieldname}-${uniqueSuffix}${fileExt}`;
     cb(null, newFilename);
   },
 });
-app.use(multer({ storage: fileStorage }).single('image'));
+
+const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.svg'];
+
+const fileFilter = (_: Express.Request, file: Express.Multer.File, cb: FileFilterCallback) => {
+  const fileExt = extname(file.originalname).toLowerCase();
+  if (allowedExtensions.includes(fileExt)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only image files (jpg, jpeg, png, webp, svg) are allowed!'));
+  }
+};
+
+app.use(multer({ storage: fileStorage, fileFilter }).single('image'));
 
 app.use((req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;

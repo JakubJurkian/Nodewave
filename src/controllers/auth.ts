@@ -77,7 +77,6 @@ export const postSignup = async (
 
 export const postLogin = async (req: Request, res: Response): Promise<void> => {
   const errors = validationResult(req);
-  console.log(errors.array());
   if (!errors.isEmpty()) {
     const error = { msg: errors.array()[0].msg };
     console.log('incorrect data!');

@@ -5,12 +5,10 @@
     <div class="bg-[#fdfdfd] p-6 rounded-md box-shadow hover:bg-[#ffffff] transition-all duration-300">
       <div class="flex gap-1 items-center">
         <div class="rounded-lg border-2 overflow-hidden w-14 h-14">
-          <img src="/<%= post.avatar %>" class="bg-contain w-full h-full" alt="avatar" />
+          <img src="/<%= post.avatar %>" class="bg-cover w-full h-full" alt="avatar" />
         </div>
         <div>
-          <!-- <a href="/user/<%= post.user %>" class=""> -->
           <p class="text-2xl"><%= post.user %></p>
-          <!-- </a> -->
         </div>
       </div>
       <div class="my-4 p-4 rounded-md bg-slate-100">
@@ -23,7 +21,7 @@
 </div>
 <% } else { %>
 <div class="text-center mt-4">
-  <p>There's no posts yet :&#40;</p>
+  <p>There are no posts yet :&#40;</p>
 </div>
 
 <% } %>

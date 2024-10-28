@@ -38,8 +38,10 @@ export const postMyProfile = async (
   res: Response
 ): Promise<void> => {
   const image = req.file;
-  // console.log(req.file);
+  console.log("My profile:", image);
+
   if (!image) return res.redirect('/my-profile');
+
 
   const avatar = 'src/public/' + req.user.avatar;
   deleteFile(avatar);

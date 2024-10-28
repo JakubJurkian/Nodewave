@@ -642,6 +642,9 @@ video {
 .bg-contain {
   background-size: contain;
 }
+.bg-cover {
+  background-size: cover;
+}
 .p-1 {
   padding: 0.25rem;
 }
