@@ -7,23 +7,25 @@
 
 <body>
   <%- include('./includes/header.ejs') %>
-  <div class="flex-column bg-[#fdfdfd] w-11/12 sm:w-[584px] mx-auto my-8 p-6 rounded-md box-shadow">
-    <form action="/my-profile" method="POST" class="flex flex-col mb-2 place-items-center" enctype="multipart/form-data">
-      <div class="avatar-upload">
-        <div class="avatar-edit">
-          <input type='file' name="image" id="imageUpload" accept=".png, .jpg, .jpeg, .webp, .svg" class="w-3/4 rounded-md border-2 mr-1 file:bg-blue-500 file:mr-3 file:p-1 file:cursor-pointer file:border-none file:hover:bg-blue-400" />
-          <label for="imageUpload"></label>
+  <main class="flex-column bg-[#fdfdfd] w-11/12 sm:w-[584px] mx-auto my-8 p-6 rounded-md box-shadow">
+    <section aria-labelledby="profile-image-upload">
+      <form action="/my-profile" method="POST" class="flex flex-col mb-2 place-items-center" enctype="multipart/form-data">
+        <div class="avatar-upload">
+          <div class="avatar-edit">
+            <input type='file' name="image" id="imageUpload" accept=".png, .jpg, .jpeg, .webp, .svg" class="w-3/4 rounded-md border-2 mr-1 file:bg-blue-500 file:mr-3 file:p-1 file:cursor-pointer file:border-none file:hover:bg-blue-400" />
+            <label for="imageUpload"></label>
+          </div>
+          <div class="avatar-preview">
+            <div id="imagePreview" style="background-image: url('<%= user.avatar %>');"></div>
+          </div>
         </div>
-        <div class="avatar-preview">
-          <div id="imagePreview" style="background-image: url('<%= user.avatar %>');"></div>
-        </div>
-      </div>
-      <button type="submit" disabled id="submitBtn" class="transition-all duration-300 bg-blue hover:bg-cyan-300 max-w-64 mb-4 w-3/4 mobile:w-10/12 p-1 text-lg rounded-md text-white disabled:cursor-not-allowed disabled:bg-gray-400 disabled:hover:bg-gray-300">
-        Change image
-      </button>
-    </form>
+        <button type="submit" disabled id="submitBtn" class="transition-all duration-300 bg-blue hover:bg-cyan-300 max-w-64 mb-4 w-3/4 mobile:w-10/12 p-1 text-lg rounded-md text-white disabled:cursor-not-allowed disabled:bg-gray-400 disabled:hover:bg-gray-300">
+          Change image
+        </button>
+      </form>
+    </section>
 
-    <div class="flex flex-col">
+    <section class="flex flex-col">
       <div class="flex items-center justify-center mb-2">
         <p class="mr-2 w-24">Username:</p>
         <p class="border-2 rounded-lg py-2 px-3 flex-1 text-center max-w-64 font-bold"><%= user.username %></p>
@@ -32,14 +34,14 @@
         <p class="mr-2 w-24">Email:</p>
         <p class="border-2 rounded-lg py-2 px-3 flex-1 text-center max-w-64 font-bold"><%= user.email %></p>
       </div>
-    </div>
+    </section>
 
     <a href="/reset-password" class="underline text-blue">Change password</a>
-  </div>
-  <div class="">
+  </main>
+  <article>
     <h1 class="text-5xl text-center">Your Posts</h1>
     <%- include('./includes/posts.ejs') %>
-  </div>
+  </article>
 </body>
 
 </html>
